@@ -1,0 +1,64 @@
+# ======================
+# Python
+# ======================
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.env
+.venv/
+
+# ======================
+# PyTorch / ML
+# ======================
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.onnx
+wandb/
+lightning_logs/
+runs/
+
+# ======================
+# 3D / NeRF / 3DGS
+# ======================
+*.ply
+*.obj
+*.fbx
+*.glb
+*.gltf
+*.stl
+*.usd
+*.usda
+*.abc
+*.npz
+*.npy
+
+# ======================
+# Video / Images
+# ======================
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.png
+*.jpg
+*.jpeg
+*.exr
+*.tiff
+
+# ======================
+# Datasets & outputs
+# ======================
+data/
+datasets/
+data_generation_PartNetMobility/
+scenes/
+assets/
+outputs/
+output/
+logs/
+checkpoints/
+results/

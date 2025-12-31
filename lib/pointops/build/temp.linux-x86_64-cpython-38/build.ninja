@@ -1,0 +1,65 @@
+ninja_required_version = 1.3
+cxx = c++
+nvcc = /bask/apps/live/EL8-ice/software/CUDA/11.8.0/bin/nvcc
+
+cflags = -pthread -B /bask/projects/j/jiaoj-generative/haoai/3DGS_envs/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -fwrapv -O2 -Wall -fPIC -O2 -isystem /bask/projects/j/jiaoj-generative/haoai/3DGS_envs/include -fPIC -O2 -isystem /bask/projects/j/jiaoj-generative/haoai/3DGS_envs/include -fPIC -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/lib/python3.8/site-packages/torch/include -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/lib/python3.8/site-packages/torch/include/torch/csrc/api/include -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/lib/python3.8/site-packages/torch/include/TH -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/lib/python3.8/site-packages/torch/include/THC -I/bask/apps/live/EL8-ice/software/CUDA/11.8.0/include -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/include/python3.8 -c
+post_cflags = -g -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=pointops_cuda -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++17
+cuda_cflags = -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/lib/python3.8/site-packages/torch/include -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/lib/python3.8/site-packages/torch/include/torch/csrc/api/include -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/lib/python3.8/site-packages/torch/include/TH -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/lib/python3.8/site-packages/torch/include/THC -I/bask/apps/live/EL8-ice/software/CUDA/11.8.0/include -I/bask/projects/j/jiaoj-generative/haoai/3DGS_envs/include/python3.8 -c
+cuda_post_cflags = -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"'' -O2 -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=pointops_cuda -D_GLIBCXX_USE_CXX11_ABI=0 -gencode=arch=compute_80,code=compute_80 -gencode=arch=compute_80,code=sm_80 -std=c++17
+cuda_dlink_post_cflags = 
+ldflags = 
+
+rule compile
+  command = $cxx -MMD -MF $out.d $cflags -c $in -o $out $post_cflags
+  depfile = $out.d
+  deps = gcc
+
+rule cuda_compile
+  depfile = $out.d
+  deps = gcc
+  command = $nvcc  $cuda_cflags -c $in -o $out $cuda_post_cflags
+
+
+
+
+
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assofixp2c/assofixp2c_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assofixp2c/assofixp2c_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assofixp2c/assofixp2c_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assofixp2c/assofixp2c_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assofixp2c_weight/assofixp2c_weight_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assofixp2c_weight/assofixp2c_weight_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assofixp2c_weight/assofixp2c_weight_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assofixp2c_weight/assofixp2c_weight_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assomatrix/assomatrix_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assomatrix/assomatrix_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assomatrix/assomatrix_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assomatrix/assomatrix_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assomatrix_float/assomatrix_float_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assomatrix_float/assomatrix_float_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assomatrix_float/assomatrix_float_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assomatrix_float/assomatrix_float_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assomatrix_label/assomatrix_label_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assomatrix_label/assomatrix_label_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/assomatrix_label/assomatrix_label_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/assomatrix_label/assomatrix_label_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/ballquery/ballquery_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/ballquery/ballquery_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/ballquery/ballquery_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/ballquery/ballquery_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/featuredistribute/featuredistribute_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/featuredistribute/featuredistribute_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/featuredistribute/featuredistribute_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/featuredistribute/featuredistribute_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/grouping/grouping_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/grouping/grouping_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/grouping/grouping_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/grouping/grouping_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/grouping_int/grouping_int_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/grouping_int/grouping_int_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/grouping_int/grouping_int_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/grouping_int/grouping_int_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/interpolation/interpolation_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/interpolation/interpolation_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/interpolation/interpolation_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/interpolation/interpolation_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/knnquery/knnquery_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/knnquery/knnquery_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/knnquery/knnquery_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/knnquery/knnquery_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/knnquerycluster/knnquerycluster_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/knnquerycluster/knnquerycluster_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/knnquerycluster/knnquerycluster_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/knnquerycluster/knnquerycluster_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/knnqueryclustergt/knnqueryclustergt_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/knnqueryclustergt/knnqueryclustergt_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/knnqueryclustergt/knnqueryclustergt_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/knnqueryclustergt/knnqueryclustergt_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/knnquerypoint/knnquerypoint_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/knnquerypoint/knnquerypoint_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/knnquerypoint/knnquerypoint_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/knnquerypoint/knnquerypoint_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/labelstat/labelstat_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/labelstat/labelstat_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/labelstat/labelstat_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/labelstat/labelstat_cuda_kernel.cu
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/pointops_api.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/pointops_api.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/sampling/sampling_cuda.o: compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/sampling/sampling_cuda.cpp
+build /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/build/temp.linux-x86_64-cpython-38/src/sampling/sampling_cuda_kernel.o: cuda_compile /bask/projects/j/jiaoj-generative/haoai/ArtPartGaussian/lib/pointops/src/sampling/sampling_cuda_kernel.cu
+
+
+
+
+
+
+
