@@ -23,7 +23,7 @@ pip install submodules/simple-knn/
 # Dataset
 Dataset could be downloaded at <a href="https://1sfu-my.sharepoint.com/personal/jla861_sfu_ca/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fjla861%5Fsfu%5Fca%2FDocuments%2FProject%2FPARIS%2Fdataset%2Ezip&parent=%2Fpersonal%2Fjla861%5Fsfu%5Fca%2FDocuments%2FProject%2FPARIS&ga=1" title="Onedrive">[Onedrive]</a>.
  
-You can also generate yourself PartNetMobility data following data_generatation_PartNetMobility/blend.sh. (PartNet_Mobility <a href="https://sapien.ucsd.edu/browse">[Here]</a>)
+You can also generate yourself PartNetMobility data following data_generatation_PartNetMobility/blend.sh. (PartNet_Mobility <a href="https://huggingface.co/datasets/sapien-sim/PartNetMobility">[Here]</a>)
 
 # Train
 You can follow start.sh
