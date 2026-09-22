@@ -21,7 +21,7 @@ pip install submodules/simple-knn/
 ```
 
 # Dataset
-Dataset could be downloaded at <a href=https://huggingface.co/datasets/hobbyaih/aimdataset" title="huggingface">[huggingface]</a>.
+Dataset could be downloaded at <a href="https://huggingface.co/datasets/hobbyaih/aimdataset" title="huggingface">[huggingface]</a>.
  
 You can also generate yourself PartNetMobility data following data_generatation_PartNetMobility/blend.sh. (PartNet_Mobility <a href="https://huggingface.co/datasets/sapien-sim/PartNetMobility">[Here]</a>)
 
