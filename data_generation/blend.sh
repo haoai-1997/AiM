@@ -1,4 +1,4 @@
-# "object category/object id/camera distance" -> "scissor/11100/4"
+# "object category/object id/camera distance" -> "scissor/11100/4" blender-python version: 4.3
 for name in "scissor/11100/4"; do
 for i in {0..199}; do
 for j in train test; do
